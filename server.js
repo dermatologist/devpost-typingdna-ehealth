@@ -85,6 +85,51 @@ app.post("/login", function(req, res) {
       let authenticated = bcrypt.compareSync(req.body.password, user.password);
       delete user.password;
       if (authenticated) {
+
+        // typingdna starts
+        var https = require('https');
+        var querystring = require('querystring');
+        var base_url = 'api.typingdna.com';
+        var apiKey = '{apiKey}';
+        var apiSecret = '{apiSecret}';
+        var data = {
+            tp1 : '{tp1}',
+            tp2 : '{tp2}',
+            quality : '{quality}',
+        }
+
+        var options = {
+            hostname : base_url,
+            port : 443,
+            path : '/match',
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cache-Control': 'no-cache',
+                'Authorization': 'Basic ' + new Buffer.alloc(apiKey + ':' + apiSecret).toString('base64'),
+            },
+        };
+
+        var responseData = '';
+        var req2= https.request(options, function(res2) {
+            res2.on('data', function(chunk) {
+                responseData += chunk;
+            });
+
+            res2.on('end', function() {
+                console.log(JSON.parse(responseData));
+            });
+        });
+
+        req2.on('error', function(e) {
+            console.error(e);
+        });
+        req2.write(
+            querystring.stringify(data)
+        );
+        req2.end();
+        // typingdna ends
+
         return res.json({
           status: true,
           user: user,
