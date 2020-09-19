@@ -22,8 +22,8 @@ module.exports = {
       
             db.run(`CREATE TABLE patterns (
               id INTEGER PRIMARY KEY,
-              compare_pattern TEXT,
               user_id INTEGER,
+              compare_pattern TEXT,
               net_score NUMERIC,
               FOREIGN KEY(user_id) REFERENCES users(id)
             )`);
