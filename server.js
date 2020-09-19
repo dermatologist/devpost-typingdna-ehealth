@@ -27,6 +27,7 @@ function isEmpty(strIn) {
       return false;
     }
 }
+require('dotenv').config();
 
 app.get('/', function(req,res){
     res.send("Welcome to EHealth typingDNA App");
@@ -90,13 +91,15 @@ app.post("/login", function(req, res) {
         var https = require('https');
         var querystring = require('querystring');
         var base_url = 'api.typingdna.com';
-        var apiKey = '{apiKey}';
-        var apiSecret = '{apiSecret}';
+        var apiKey = process.env.APIKEY;
+        var apiSecret = process.env.APISECRET;
         var data = {
-            tp1 : '{tp1}',
-            tp2 : '{tp2}',
-            quality : '{quality}',
+            tp1 : user.original_pattern,
+            tp2 : req.body.compare_pattern,
+            quality : 2,
         }
+
+        console.log(data);
 
         var options = {
             hostname : base_url,
@@ -106,7 +109,7 @@ app.post("/login", function(req, res) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Cache-Control': 'no-cache',
-                'Authorization': 'Basic ' + new Buffer.alloc(apiKey + ':' + apiSecret).toString('base64'),
+                'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
             },
         };
 
