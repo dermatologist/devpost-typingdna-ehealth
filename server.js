@@ -8,22 +8,25 @@ var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 const path = require('path');
 const app = express();
+const session = require('express-session'); // @beapen
+const cors = require('cors');
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-// function isEmpty(strIn) {
-//     if (strIn === undefined) {
-//       return true;
-//     } else if (strIn == null) {
-//       return true;
-//     } else if (strIn == "") {
-//       return true;
-//     } else {
-//       return false;
-//     }
-// }
+function isEmpty(strIn) {
+    if (strIn === undefined) {
+      return true;
+    } else if (strIn == null) {
+      return true;
+    } else if (strIn == "") {
+      return true;
+    } else {
+      return false;
+    }
+}
 
 app.get('/', function(req,res){
     res.send("Welcome to EHealth typingDNA App");
@@ -31,7 +34,7 @@ app.get('/', function(req,res){
 
 app.post('/register', function(req, res){
     // check to make sure none of the fields are empty
-    if( isEmpty(req.body.name)  || isEmpty(req.body.email) || isEmpty(req.body.company_name) || isEmpty(req.body.password) ){
+    if( isEmpty(req.body.name)  || isEmpty(req.body.email) || isEmpty(req.body.company_name) || isEmpty(req.body.original_pattern) || isEmpty(req.body.password) ){
         return res.json({
             'status' : false,
             'message' : 'All fields are required'
@@ -42,7 +45,7 @@ app.post('/register', function(req, res){
         let db = new sqlite3.Database("./database/ehealthApp.db");
         let sql = `INSERT INTO users(name,email,company_name, original_pattern, password) VALUES('${
           req.body.name
-        }','${req.body.email}','${req.body.company_name}','${hash}')`;
+        }','${req.body.email}','${req.body.company_name}','${req.body.original_pattern}','${hash}')`;
         db.run(sql, function(err) {
           if (err) {
             throw err;
@@ -58,9 +61,12 @@ app.post('/register', function(req, res){
 });
 
 app.get("/login", function(req, res) {
-
+  res.render('login', { error: false });
 });
 
+app.get("/register", function(req, res) {
+  res.render('register', { error: false });
+});
 app.post("/login", function(req, res) {
     let db = new sqlite3.Database("./database/ehealthApp.db");
     let sql = `SELECT * from users where email='${req.body.email}'`;

@@ -26,3 +26,5 @@ function isEmpty(strIn) {
   }
 }
 ```
+
+node scripts/migrate.js up

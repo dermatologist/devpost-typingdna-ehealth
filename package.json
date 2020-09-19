@@ -28,9 +28,12 @@
     "body-parser": "^1.19.0",
     "connect-multiparty": "^2.2.0",
     "express": "^4.17.1",
+    "express-session": "*",
     "path": "^0.12.7",
     "sqlite3": "^5.0.0",
     "pug": "^3.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "umzug": "^2.3.0"
   }
 }
