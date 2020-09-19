@@ -11,6 +11,18 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// function isEmpty(strIn) {
+//     if (strIn === undefined) {
+//       return true;
+//     } else if (strIn == null) {
+//       return true;
+//     } else if (strIn == "") {
+//       return true;
+//     } else {
+//       return false;
+//     }
+// }
+
 app.get('/', function(req,res){
     res.send("Welcome to EHealth typingDNA App");
 });
