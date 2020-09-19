@@ -87,7 +87,8 @@ app.post("/login", function(req, res) {
       if (authenticated) {
         return res.json({
           status: true,
-          user: user
+          user: user,
+          compare: req.body.compare_pattern
         });
       }
       return res.json({
