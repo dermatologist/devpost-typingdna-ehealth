@@ -6,11 +6,13 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
-
+const path = require('path');
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 // function isEmpty(strIn) {
 //     if (strIn === undefined) {
 //       return true;
@@ -53,6 +55,10 @@ app.post('/register', function(req, res){
         });
         db.close();
     });
+});
+
+app.get("/login", function(req, res) {
+
 });
 
 app.post("/login", function(req, res) {
