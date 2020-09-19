@@ -1,0 +1,35 @@
+{
+  "name": "devpost-typingdna-ehealth",
+  "version": "1.0.0",
+  "description": "TypingDNA eHealth application",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dermatologist/devpost-typingdna-ehealth.git"
+  },
+  "keywords": [
+    "typingDNA",
+    "ehealth",
+    "devpost",
+    "hackathon"
+  ],
+  "author": "Bell Eapen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dermatologist/devpost-typingdna-ehealth/issues"
+  },
+  "homepage": "https://github.com/dermatologist/devpost-typingdna-ehealth#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "connect-multiparty": "^2.2.0",
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "sqlite3": "^5.0.0",
+    "umzug": "^2.3.0"
+  }
+}
