@@ -46,16 +46,13 @@ block content
         }
         // get message
         var message = JSON.parse(!{JSON.stringify(message)});
-        //var message = JSON.parse('!{JSON.stringify(message).replace(/<\//g, "<\\/")}');
         // Map JSON values back to label array
         var labels = message.map(function (e) {
-        return e.entry_date;
+            return e.entry_date;
         });
-        console.log(labels); // ["2016", "2017", "2018", "2019"]
 
         // Map JSON values back to values array
         var values = message.map(function (e) {
-        return e.net_score;
+            return e.net_score;
         });
-        console.log(values); // ["10", "25", "55", "120"]
         var chart = BuildChart(labels, values, "typingDNA score over time");

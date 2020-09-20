@@ -51,10 +51,11 @@ app.post('/register', function(req, res){
           if (err) {
             throw err;
           } else {
-            return res.json({
-              status: true,
-              message: "User Created"
-            });
+            // return res.json({
+            //   status: true,
+            //   message: "User Created"
+            // });
+            return res.redirect(301, '/');
           }
         });
         db.close();
