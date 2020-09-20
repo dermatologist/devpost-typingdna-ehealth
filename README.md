@@ -3,16 +3,19 @@
 ## About
 [Typingdna](https://www.typingdna.com/) is an innovative biometric algorithm based on the way you type. Typingdna is organizing a [hackathon on devpost](https://typingdna.devpost.com/). This is an entry for that hackathon.
 
-Dermatomyositis is an uncommon disease characterized by muscle weakness and a skin rash. The condition can affect adults and children. The condition can wax and wane in severity. The treatment needs to be adjusted accordingly. I believe (this is just a hypothesis) that the typing pattern may change based on activity.
+Dermatomyositis is an uncommon disease characterized by muscle weakness and a skin rash. The condition can affect adults and children. The condition can wax and wane in severity. The treatment needs to be adjusted accordingly. I believe (this is just a hypothesis) that the typing pattern may change based on activity of the disease. However, dermatomyositis causes mostly proximal muscle weakness and may not affect typing pattern.
 
 ## What it does
 
 This is a simple POC application that records the typing pattern on registration and subsequently monitors the pattern on every login and plots the similarity using the typingdna API. Ideally, this can be integrated with personal health records (PHR)
 
 ## Stack
+* Node
 * Express
 * Sqlite
+* Pug
 * Chartjs
+* typingdna.js
 
 ## How to use
 
