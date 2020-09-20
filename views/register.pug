@@ -1,0 +1,36 @@
+extends layout
+ 
+block content
+  div(class="wrapper")
+    div(class="form-signin")
+      h1= title
+      if error 
+        div(class="alert alert-danger" role='alert') #{error}
+      form(action="/register" method="post")
+        div(class="form-group")
+          label(for="name") Name
+          input(class="form-control" type="text" name="name" placeholder="Name")
+        div(class="form-group")
+          label(for="email") Email
+          input(class="form-control" type="text" id="email" name="email" placeholder="Email")
+        div(class="form-group")
+          label(for="company_name") Company Name
+          input(class="form-control" type="text" name="company_name" placeholder="Company Name")
+        div(class="form-group")
+          input(class="form-control" type="hidden" id="original_pattern" name="original_pattern")
+        div(class="form-group")    
+          label(for="password") Password
+          input(class="form-control" type="password" name="password" placeholder="Password")
+        div(class="form-group")
+          div(class="text-right")
+            input(class="btn btn-primary" type="submit" onclick="submitted()" value="Register")
+        script.
+          var tdna  = new TypingDNA(500);
+          //tdna.addTarget(email)
+          //sametext pattern
+          //var typingPattern = tdna.getTypingPattern({type:1, text:"Hello"});
+          function submitted(){
+              var typingPattern = tdna.getTypingPattern({type:2});
+              document.getElementById("original_pattern").value = typingPattern;
+              console.log(typingPattern);
+          }
