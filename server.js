@@ -95,7 +95,7 @@ app.post("/login", function(req, res) {
         var apiSecret = process.env.APISECRET;
         var data = {
             tp1 : user.original_pattern,
-            tp2 : req.body.compare_pattern,
+            tp2 : req.body.original_pattern,
             quality : 2,
         }
 
@@ -132,17 +132,18 @@ app.post("/login", function(req, res) {
         );
         req2.end();
         // typingdna ends
-
         return res.json({
           status: true,
           user: user,
-          compare: req.body.compare_pattern
+          compare: req.body.original_pattern,
+          response: responseData
+        });
+      }else{
+        return res.json({
+          status: false,
+          message: "Wrong Password, please retry"
         });
       }
-      return res.json({
-        status: false,
-        message: "Wrong Password, please retry"
-      });
     });
 });
 
