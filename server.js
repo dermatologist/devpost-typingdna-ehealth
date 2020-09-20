@@ -160,10 +160,11 @@ app.post("/", function(req, res) {
           if (err) {
             throw err;
           }
-          return res.json({
-            status: true,
-            patterns: rows
-          });
+          // return res.json({
+          //   status: true,
+          //   patterns: rows
+          // });
+          res.render('chart', { title: 'Chart', message: JSON.stringify(rows, null, 4) });
         });
       }else{
         return res.json({
