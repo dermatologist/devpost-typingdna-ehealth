@@ -1,0 +1,58 @@
+extends layout
+ 
+block content
+  div(class="wrapper")
+    div(class="form-signin")
+      h1= title
+      if error 
+        div(class="alert alert-danger" role='alert') #{error}
+    div(class="chart")
+      canvas(id="myChart")
+    script.
+        function BuildChart(labels, values, chartTitle) {
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                labels: labels, // Our labels
+                datasets: [{
+                    label: chartTitle, // Name the series
+                    data: values, // Our values
+                    backgroundColor: [ // Specify custom colors
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [ // Add custom color borders
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1 // Specify bar border width
+                }]
+                },
+                options: {
+                responsive: true, // Instruct chart js to respond nicely.
+                maintainAspectRatio: false, // Add to prevent default behavior of full-width/height 
+                }
+            });
+            return myChart;
+        }
+        // get message
+        var message = JSON.parse(!{JSON.stringify(message)});
+        // Map JSON values back to label array
+        var labels = message.map(function (e) {
+            return e.entry_date;
+        });
+
+        // Map JSON values back to values array
+        var values = message.map(function (e) {
+            return e.net_score;
+        });
+        var chart = BuildChart(labels, values, "typingDNA score over time");
