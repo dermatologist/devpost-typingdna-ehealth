@@ -29,9 +29,9 @@ function isEmpty(strIn) {
 }
 require('dotenv').config();
 
-app.get('/', function(req,res){
-    res.send("Welcome to EHealth typingDNA App");
-});
+// app.get('/', function(req,res){
+//     res.send("Welcome to EHealth typingDNA App");
+// });
 
 app.post('/register', function(req, res){
     // check to make sure none of the fields are empty
@@ -61,14 +61,14 @@ app.post('/register', function(req, res){
     });
 });
 
-app.get("/login", function(req, res) {
+app.get("/", function(req, res) {
   res.render('login', { error: false });
 });
 
 app.get("/register", function(req, res) {
   res.render('register', { error: false });
 });
-app.post("/login", function(req, res) {
+app.post("/", function(req, res) {
     let db = new sqlite3.Database("./database/ehealthApp.db");
     let sql = `SELECT * from users where email='${req.body.email}'`;
     db.all(sql, [], (err, rows) => {

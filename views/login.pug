@@ -6,7 +6,7 @@ block content
       h1= title
       if error 
         div(class="alert alert-danger" role='alert') #{error}
-      form(action="/login" method="post")
+      form(action="/" method="post")
         div(class="form-group")
           label(for="name") Name
           input(class="form-control" type="text" name="name" placeholder="Name")
@@ -23,7 +23,8 @@ block content
           input(class="form-control" type="password" name="password" placeholder="Password")
         div(class="form-group")
           div(class="text-right")
-            input(class="btn btn-primary" type="submit" onclick="submitted()" value="Register")
+            a(href="/register") Sign Up |  
+            input(class="btn btn-primary" type="submit" onclick="submitted()" value="Login")
         script.
           var tdna  = new TypingDNA(500);
           //tdna.addTarget(email)
