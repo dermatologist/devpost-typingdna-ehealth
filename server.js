@@ -27,6 +27,7 @@ function isEmpty(strIn) {
       return false;
     }
 }
+require('dotenv').config();
 
 app.get('/', function(req,res){
     res.send("Welcome to EHealth typingDNA App");
@@ -85,51 +86,94 @@ app.post("/login", function(req, res) {
       let authenticated = bcrypt.compareSync(req.body.password, user.password);
       delete user.password;
       if (authenticated) {
+
+        // typingdna starts
+        var https = require('https');
+        var querystring = require('querystring');
+        var base_url = 'api.typingdna.com';
+        var apiKey = process.env.APIKEY;
+        var apiSecret = process.env.APISECRET;
+        var data = {
+            tp1 : user.original_pattern,
+            tp2 : req.body.original_pattern,
+            quality : 2,
+        }
+
+        console.log(data);
+
+        var options = {
+            hostname : base_url,
+            port : 443,
+            path : '/match',
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cache-Control': 'no-cache',
+                'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
+            },
+        };
+
+        var responseData = '';
+        var req2= https.request(options, function(res2) {
+            res2.on('data', function(chunk) {
+                responseData += chunk;
+                typingdata = JSON.parse(responseData);
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = mm + '/' + dd + '/' + yyyy;
+                // create invoice
+                let db = new sqlite3.Database("./database/ehealthApp.db");
+                let sql = `INSERT INTO patterns(entry_date ,user_email, compare_pattern,net_score) VALUES(
+                '${today}',
+                '${req.body.email}',
+                '${req.body.original_pattern}',
+                ${typingdata.net_score}
+                )`;
+                db.serialize(function() {
+                    db.run(sql, function(err) {
+                      if (err) {
+                        throw err;
+                      }
+                    });
+                });
+            });
+
+            res2.on('end', function() {
+                console.log(JSON.parse(responseData));
+            });
+        });
+
+        req2.on('error', function(e) {
+            console.error(e);
+        });
+        req2.write(
+            querystring.stringify(data)
+        );
+        req2.end();
+        // typingdna ends
         return res.json({
           status: true,
           user: user,
-          compare: req.body.compare_pattern
+          compare: req.body.original_pattern,
+          response: responseData
+        });
+      }else{
+        return res.json({
+          status: false,
+          message: "Wrong Password, please retry"
         });
       }
-      return res.json({
-        status: false,
-        message: "Wrong Password, please retry"
-      });
     });
 });
 
-app.post("/patterns", multipartMiddleware, function(req, res) {
-    // validate data
-    if (isEmpty(req.body.name)) {
-      return res.json({
-        status: false,
-        message: "Pattern needs a name"
-      });
-    }
-    // perform other checks
-    // create invoice
-    let db = new sqlite3.Database("./database/ehealthApp.db");
-    let sql = `INSERT INTO patterns(name,user_id,compare_pattern,net_score) VALUES(
-    '${req.body.name}',
-    '${req.body.user_id}',
-    0
-    )`;
-    db.serialize(function() {
-        db.run(sql, function(err) {
-          if (err) {
-            throw err;
-          }
-          return res.json({
-            status: true,
-            message: "Record created"
-            });
-        });
-    });
-});
 
-app.get("/patterns/user/:user_id", multipartMiddleware, function(req, res) {
+
+app.get("/patterns/user/:user_email", multipartMiddleware, function(req, res) {
     let db = new sqlite3.Database("./database/ehealthApp.db");
-    let sql = `SELECT * FROM patterns WHERE user_id='${req.params.user_id}'`;
+    let sql = `SELECT * FROM patterns WHERE user_email='${req.params.user_email}'`;
     db.all(sql, [], (err, rows) => {
       if (err) {
         throw err;
