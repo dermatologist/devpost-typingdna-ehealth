@@ -3,7 +3,7 @@
 ## About
 [Typingdna](https://www.typingdna.com/) is an innovative biometric algorithm based on the way you type. Typingdna is organizing a [hackathon on devpost](https://typingdna.devpost.com/). This is an entry for that hackathon.
 
-Dermatomyositis is an uncommon disease characterized by muscle weakness and a skin rash. The condition can affect adults and children. The condition can wax and wane in severity. The treatment needs to be adjusted accordingly. I believe (this is just a hypothesis) that the typing pattern may change based on activity of the disease. However, dermatomyositis causes mostly proximal muscle weakness and may not affect typing pattern.
+Dermatomyositis is an uncommon disease characterized by muscle weakness and a skin rash. The condition can affect adults and children. The condition can wax and wane in severity. The treatment needs to be adjusted accordingly. I believe (this is just a hypothesis) that the typing pattern may change based on activity of the disease. However, dermatomyositis causes mostly proximal muscle weakness and may not affect typing pattern. Typing patterns may also fluctuate in other muscular disorders and neurocognitive disorders.
 
 ## What it does
 
