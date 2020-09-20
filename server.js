@@ -154,11 +154,16 @@ app.post("/", function(req, res) {
         );
         req2.end();
         // typingdna ends
-        return res.json({
-          status: true,
-          user: user,
-          compare: req.body.original_pattern,
-          response: responseData
+        // let db = new sqlite3.Database("./database/ehealthApp.db");
+        sql = `SELECT * FROM patterns WHERE user_email='${req.body.email}'`;
+        db.all(sql, [], (err, rows) => {
+          if (err) {
+            throw err;
+          }
+          return res.json({
+            status: true,
+            patterns: rows
+          });
         });
       }else{
         return res.json({
