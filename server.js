@@ -117,6 +117,28 @@ app.post("/login", function(req, res) {
         var req2= https.request(options, function(res2) {
             res2.on('data', function(chunk) {
                 responseData += chunk;
+                typingdata = JSON.parse(responseData);
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = mm + '/' + dd + '/' + yyyy;
+                // create invoice
+                let db = new sqlite3.Database("./database/ehealthApp.db");
+                let sql = `INSERT INTO patterns(entry_date ,user_email, compare_pattern,net_score) VALUES(
+                '${today}',
+                '${req.body.email}',
+                '${req.body.original_pattern}',
+                ${typingdata.net_score}
+                )`;
+                db.serialize(function() {
+                    db.run(sql, function(err) {
+                      if (err) {
+                        throw err;
+                      }
+                    });
+                });
             });
 
             res2.on('end', function() {
@@ -147,38 +169,11 @@ app.post("/login", function(req, res) {
     });
 });
 
-app.post("/patterns", multipartMiddleware, function(req, res) {
-    // validate data
-    if (isEmpty(req.body.name)) {
-      return res.json({
-        status: false,
-        message: "Pattern needs a name"
-      });
-    }
-    // perform other checks
-    // create invoice
-    let db = new sqlite3.Database("./database/ehealthApp.db");
-    let sql = `INSERT INTO patterns(name,user_id,compare_pattern,net_score) VALUES(
-    '${req.body.name}',
-    '${req.body.user_id}',
-    0
-    )`;
-    db.serialize(function() {
-        db.run(sql, function(err) {
-          if (err) {
-            throw err;
-          }
-          return res.json({
-            status: true,
-            message: "Record created"
-            });
-        });
-    });
-});
 
-app.get("/patterns/user/:user_id", multipartMiddleware, function(req, res) {
+
+app.get("/patterns/user/:user_email", multipartMiddleware, function(req, res) {
     let db = new sqlite3.Database("./database/ehealthApp.db");
-    let sql = `SELECT * FROM patterns WHERE user_id='${req.params.user_id}'`;
+    let sql = `SELECT * FROM patterns WHERE user_email='${req.params.user_email}'`;
     db.all(sql, [], (err, rows) => {
       if (err) {
         throw err;
