@@ -44,7 +44,8 @@ block content
             });
             return myChart;
         }
-        // get message
+        // get message 
+        // 'message' is from req.render 
         var message = JSON.parse(!{JSON.stringify(message)});
         // Map JSON values back to label array
         var labels = message.map(function (e) {
