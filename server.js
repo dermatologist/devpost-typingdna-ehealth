@@ -88,7 +88,7 @@ app.post("/", function(req, res) {
       delete user.password;
       if (authenticated) {
 
-        // typingdna starts
+        // typingdna starts  TODO: refactor original_pattern on req.body to current_pattern
         var https = require('https');
         var querystring = require('querystring');
         var base_url = 'api.typingdna.com';
@@ -96,11 +96,11 @@ app.post("/", function(req, res) {
         var apiSecret = process.env.APISECRET;
         var data = {
             tp1 : user.original_pattern,
-            tp2 : req.body.original_pattern,
+            tp2 : req.body.original_pattern,  // Sorry about this confusing variable name.
             quality : 2,
         }
 
-        console.log(data);
+        // console.log(data);
 
         var options = {
             hostname : base_url,
@@ -125,7 +125,7 @@ app.post("/", function(req, res) {
                 var yyyy = today.getFullYear();
 
                 today = mm + '/' + dd + '/' + yyyy;
-                // create invoice
+                // create record
                 let db = new sqlite3.Database("./database/ehealthApp.db");
                 let sql = `INSERT INTO patterns(entry_date ,user_email, compare_pattern,net_score) VALUES(
                 '${today}',
@@ -154,7 +154,8 @@ app.post("/", function(req, res) {
             querystring.stringify(data)
         );
         req2.end();
-        // typingdna ends
+        // typingdna code ends
+
         // let db = new sqlite3.Database("./database/ehealthApp.db");
         sql = `SELECT * FROM patterns WHERE user_email='${req.body.email}'`;
         db.all(sql, [], (err, rows) => {
