@@ -31,7 +31,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "*",
-    "heroku": "^7.43.0",
+    "heroku": "^8.0.1",
     "path": "^0.12.7",
     "pug": "^3.0.0",
     "sqlite3": "^5.0.0",
